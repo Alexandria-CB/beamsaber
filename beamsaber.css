@@ -1,0 +1,8 @@
+h1 {
+}
+
+canvas {
+    width: 640px;
+    height: 480px;
+    outline: black 2px solid;
+}
