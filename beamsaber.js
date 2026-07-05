@@ -49,6 +49,121 @@ Gfx.prototype.clear = function() {
 
 // Matrix math interface
 
+Vec3 = function (a, b, c) {
+    this.values = [a, b, c];
+}
+
+Vec3.prototype.x = function() {
+    return this.values[0];
+}
+
+Vec3.prototype.r = function() {
+    return this.values[0];
+}
+
+Vec3.prototype.y = function() {
+    return this.values[1];
+}
+
+Vec3.prototype.g = function() {
+    return this.values[1];
+}
+
+Vec3.prototype.z = function() {
+    return this.values[2];
+}
+
+Vec3.prototype.b = function() {
+    return this.values[2];
+}
+
+Vec3.prototype.mag = function() {
+    return Math.sqrt(this.values[0] * this.values[0] +
+		     this.values[1] * this.values[1] +
+		     this.values[2] * this.values[2]);
+}
+
+Vec3.prototype.scale = function(factor) {
+    this.values[0] *= factor;
+    this.values[1] *= factor;
+    this.values[2] *= factor;
+}
+
+Vec3.prototype.norm = function() {
+    this.scale(1/this.mag());
+}
+
+Vec3.dot = function(v1, v2) {
+    return v1.x() * v2.x() + v1.y() * v2.y() + v1.z() * v2.z();
+}
+
+Vec3.cross = function(v1, v2) {
+    i = v1.y() * v2.z() - v1.z() * v2.y();
+    j = v1.z() * v2.x() - v1.x() * v2.z();
+    k = v1.x() * v2.y() - v1.y() * v2.x();
+    return new Vec3(i, j, k);
+}
+
+Vec4 = function (a, b, c, d) {
+  this.values = [a, b, c, d];
+}
+
+Vec4.prototype.x = function() {
+  return this.values[0];
+}
+
+Vec4.prototype.r = function() {
+  return this.values[0];
+}
+
+Vec4.prototype.y = function() {
+  return this.values[1];
+}
+
+Vec4.prototype.g = function() {
+  return this.values[1];
+}
+
+Vec4.prototype.z = function() {
+  return this.values[2];
+}
+
+Vec4.prototype.b = function() {
+  return this.values[2];
+}
+
+Vec4.prototype.w = function() {
+  return this.values[3];
+}
+
+Vec4.prototype.a = function() {
+  return this.values[3];
+}
+
+Vec4.prototype.mag = function() {
+    return Math.sqrt(this.values[0] * this.values[0],
+		     this.values[1] * this.values[1],
+		     this.values[2] * this.values[2],
+		     this.values[3] * this.values[3]);
+}
+
+Vec4.prototype.scale = function(factor) {
+    this.values[0] *= factor;
+    this.values[1] *= factor;
+    this.values[2] *= factor;
+    this.values[3] *= factor;
+}
+
+Vec4.prototype.norm = function() {
+    this.scale(1/this.mag());
+}
+
+Vec4.dot = function(v1, v2) {
+  return v1.x() * v2.x() + v1.y() * v2.y() + v1.z() * v2.z() + v1.w() * v2.w();
+}
+
+// Scene representation
+
 // Beamsaber interface
 
 beamsaber = null;
