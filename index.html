@@ -11,5 +11,21 @@
       <p>Please upgrade to a browser from this decade.</p>
     </canvas>
     <button type="button" onclick="beamsaber_render();">render</button>
+    <div id="input-section">
+      <div id="input_selection">
+	<button type="button" onclick="beamsaber_set_input('beamsaber');">beamsaber</button>
+	<button type="button" onclick="beamsaber_set_input('json');">json</button>
+      </div>
+      <div id="beamsaber-input">
+	<textarea class="code-input">
+	</textarea>
+	<button type="button" onclick="beamsaber_submit('beamsaber');">submit</button>
+      </div>
+      <div id="json-input">
+	<textarea class="code-input">
+	</textarea>
+	<button type="button" onclick="beamsaber_submit('json');">submit</button>
+      </div>
+    </div>
   </body>
 </html>

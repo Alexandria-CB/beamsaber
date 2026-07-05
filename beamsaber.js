@@ -166,12 +166,17 @@ Vec4.dot = function(v1, v2) {
 
 // Beamsaber interface
 
-beamsaber = null;
+let beamsaber = null;
+
+const default_input_mode = "json"; // Change to beamsaber once it's implemented.
+
+const input_modes = [ "json", "beamsaber" ];
 
 function beamsaber_init() {
   console.log("Initializing GFX");
   beamsaber = new Gfx("render-canvas", 640, 480);
-  beamsaber.clear();
+    beamsaber.clear();
+    beamsaber_set_input(default_input_mode);
 }
 
 function beamsaber_render() {
@@ -185,4 +190,39 @@ function beamsaber_render() {
 
   beamsaber.blit();
   console.log("Render complete.");
+}
+
+function beamsaber_submit(type) {
+    if (type === "json") {
+	// Load from json code, and parse.
+	console.log("Loading json data...");
+    }
+    else if (type === "beamsaber") {
+	// Load from custom data language, and parse.
+	console.log("Loading beamsaber data...");
+    }
+    else {
+	alert("Invalid render type!");
+    }
+}
+
+function beamsaber_set_input(mode) {
+    let valid = false;
+    for (let i=0; i<input_modes.length; i++) {
+	e = document.getElementById(input_modes[i] + "-input");
+	if (mode === input_modes[i]) {
+	    console.log("Enabling " + mode + " input.");
+	    e.style.display = "inline";
+	    valid = true;
+	}
+	else {
+	    console.log("Hiding " + input_modes[i] + " input.");
+	    e.style.display = "none";
+	}
+    }
+
+    if (!valid) {
+	console.log("No supported mode \"" + mode + "\".");
+	document.getElementById(default_input_mode + "-input").style.display = "inline";
+    }
 }
