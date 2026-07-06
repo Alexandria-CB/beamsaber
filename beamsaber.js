@@ -1,50 +1,50 @@
 // Gfx pixel plotting interface
 
 Gfx = function (canvas_id, width_px, height_px) {
-  this.canvas = document.getElementById(canvas_id);
-  if (! this.canvas) {
-    console.log("No canvas with id: " + canvas_id);
-    return;
-  }
-  this.ctx = this.canvas.getContext("2d");
-  this.resizeCanvas();
-  this.image_data_width_px = width_px;
-  this.image_data_height_px = height_px;
-  this.image_data = this.ctx.createImageData(width_px, height_px);
+    this.canvas = document.getElementById(canvas_id);
+    if (! this.canvas) {
+	console.log("No canvas with id: " + canvas_id);
+	return;
+    }
+    this.ctx = this.canvas.getContext("2d");
+    this.resizeCanvas();
+    this.image_data_width_px = width_px;
+    this.image_data_height_px = height_px;
+    this.image_data = this.ctx.createImageData(width_px, height_px);
 }
 
 Gfx.prototype.blit = function () {
-  this.ctx.putImageData(this.image_data, 0, 0);
+    this.ctx.putImageData(this.image_data, 0, 0);
 }
 
 Gfx.prototype.putPixel = function (x, y, r, g, b, a) {
-  const start = y * (this.image_data_width_px * 4) + (x * 4);
-  const red_index   = start + 0;
-  const green_index = start + 1;
-  const blue_index  = start + 2;
-  const alpha_index = start + 3;
+    const start = y * (this.image_data_width_px * 4) + (x * 4);
+    const red_index   = start + 0;
+    const green_index = start + 1;
+    const blue_index  = start + 2;
+    const alpha_index = start + 3;
 
-  this.image_data.data[red_index]   = r;
-  this.image_data.data[green_index] = g;
-  this.image_data.data[blue_index]  = b;
-  this.image_data.data[alpha_index] = a;
+    this.image_data.data[red_index]   = r;
+    this.image_data.data[green_index] = g;
+    this.image_data.data[blue_index]  = b;
+    this.image_data.data[alpha_index] = a;
 }
 
 Gfx.prototype.resizeCanvas = function () {
-  const width = this.canvas.clientWidth;
-  const height = this.canvas.clientHeight;
+    const width = this.canvas.clientWidth;
+    const height = this.canvas.clientHeight;
 
-  if (this.canvas.width !== width || this.canvas.height !== height) {
-    this.canvas.width = width;
-    this.canvas.height = height;
-  }
+    if (this.canvas.width !== width || this.canvas.height !== height) {
+	this.canvas.width = width;
+	this.canvas.height = height;
+    }
 }
 
 Gfx.prototype.clear = function() {
-  console.log("Clearing the screen...");
-  this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-  this.image_data = this.ctx.createImageData(this.image_data_width_px, this.image_data_height_px);
-  this.blit();
+    console.log("Clearing the screen...");
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.image_data = this.ctx.createImageData(this.image_data_width_px, this.image_data_height_px);
+    this.blit();
 }
 
 // Matrix math interface
@@ -105,39 +105,39 @@ Vec3.cross = function(v1, v2) {
 }
 
 Vec4 = function (a, b, c, d) {
-  this.values = [a, b, c, d];
+    this.values = [a, b, c, d];
 }
 
 Vec4.prototype.x = function() {
-  return this.values[0];
+    return this.values[0];
 }
 
 Vec4.prototype.r = function() {
-  return this.values[0];
+    return this.values[0];
 }
 
 Vec4.prototype.y = function() {
-  return this.values[1];
+    return this.values[1];
 }
 
 Vec4.prototype.g = function() {
-  return this.values[1];
+    return this.values[1];
 }
 
 Vec4.prototype.z = function() {
-  return this.values[2];
+    return this.values[2];
 }
 
 Vec4.prototype.b = function() {
-  return this.values[2];
+    return this.values[2];
 }
 
 Vec4.prototype.w = function() {
-  return this.values[3];
+    return this.values[3];
 }
 
 Vec4.prototype.a = function() {
-  return this.values[3];
+    return this.values[3];
 }
 
 Vec4.prototype.mag = function() {
@@ -159,7 +159,7 @@ Vec4.prototype.norm = function() {
 }
 
 Vec4.dot = function(v1, v2) {
-  return v1.x() * v2.x() + v1.y() * v2.y() + v1.z() * v2.z() + v1.w() * v2.w();
+    return v1.x() * v2.x() + v1.y() * v2.y() + v1.z() * v2.z() + v1.w() * v2.w();
 }
 
 // Scene representation
@@ -167,39 +167,54 @@ Vec4.dot = function(v1, v2) {
 // Beamsaber interface
 
 let beamsaber = null;
+let scene = {};
 
 const default_input_mode = "json"; // Change to beamsaber once it's implemented.
 
 const input_modes = [ "json", "beamsaber" ];
 
 function beamsaber_init() {
-  console.log("Initializing GFX");
-  beamsaber = new Gfx("render-canvas", 640, 480);
+    console.log("Initializing GFX");
+    beamsaber = new Gfx("render-canvas", 640, 480);
     beamsaber.clear();
     beamsaber_set_input(default_input_mode);
 }
 
 function beamsaber_render() {
-  console.log("Rendering...");
-  beamsaber.clear();
-  for (let x=0; x<640; x += 1) {
-    for (let y=0; y<480; y += 1) {
-      beamsaber.putPixel(x, y, x%256, y%256, x%256, y%256);
+    console.log("Rendering...");
+    beamsaber.clear();
+    for (let x=0; x<640; x += 1) {
+	for (let y=0; y<480; y += 1) {
+	    beamsaber.putPixel(x, y, x%256, y%256, x%256, y%256);
+	}
     }
-  }
 
-  beamsaber.blit();
-  console.log("Render complete.");
+    beamsaber.blit();
+    console.log("Render complete.");
 }
 
 function beamsaber_submit(type) {
     if (type === "json") {
 	// Load from json code, and parse.
 	console.log("Loading json data...");
+	input = document.getElementById("json-input");
+	try {
+	    json_text = input.getElementsByClassName("code-input")[0].value;
+	    if (json_text.length === 0) {
+		json_text = '{}';
+	    }
+	    scene = JSON.parse(json_text);
+	}
+	catch (e) {
+	    return console.log(e);
+	}
+	console.log("Scene: " + JSON.stringify(scene));
     }
     else if (type === "beamsaber") {
 	// Load from custom data language, and parse.
 	console.log("Loading beamsaber data...");
+	console.log("beamsaber input not implemented yet...");
+	scene = {};
     }
     else {
 	alert("Invalid render type!");
