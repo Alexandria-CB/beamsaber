@@ -18,7 +18,10 @@ Gfx.prototype.blit = function () {
 }
 
 Gfx.prototype.putPixel = function (x, y, r, g, b, a) {
-    const start = y * (this.image_data_width_px * 4) + (x * 4);
+    screen_x = this.image_data_width_px / 2 + x;
+    screen_y = this.image_data_height_px / 2 - y;
+
+    const start = screen_y * (this.image_data_width_px * 4) + (screen_x * 4);
     const red_index   = start + 0;
     const green_index = start + 1;
     const blue_index  = start + 2;
@@ -38,6 +41,10 @@ Gfx.prototype.resizeCanvas = function () {
 	this.canvas.width = width;
 	this.canvas.height = height;
     }
+
+    this.image_data_width_px = width;
+    this.image_data_height_px = height;
+    this.image_data = this.ctx.createImageData(width, height);
 }
 
 Gfx.prototype.clear = function() {
@@ -164,6 +171,10 @@ Vec4.dot = function(v1, v2) {
 
 // Scene representation
 
+render_point = function (x, y) {
+    beamsaber.putPixel(x, y, Math.abs(4*x)%256, Math.abs(16*y)%256, Math.abs(x+y)%256, 255);
+}
+
 // Beamsaber interface
 
 let beamsaber = null;
@@ -183,9 +194,9 @@ function beamsaber_init() {
 function beamsaber_render() {
     console.log("Rendering...");
     beamsaber.clear();
-    for (let x=0; x<640; x += 1) {
-	for (let y=0; y<480; y += 1) {
-	    beamsaber.putPixel(x, y, x%256, y%256, x%256, y%256);
+    for (let x=-1 * beamsaber.image_data_width_px / 2; x<beamsaber.image_data_width_px / 2; x += 1) {
+	for (let y=-1 * beamsaber.image_data_height_px / 2; y< beamsaber.image_data_height_px / 2; y += 1) {
+	    render_point(x, y);
 	}
     }
 
