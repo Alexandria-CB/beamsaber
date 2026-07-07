@@ -174,6 +174,21 @@ clamp = function(min, x, max) {
 }
 
 // Scene representation
+
+default_scene = {
+    "camera": {
+	"position": [0, 0, 0], // Located at the origin
+	"direction": [0, 0, 1], // Along the Z axis
+	"viewplane": {
+	    "width": 1, // 1 meter
+	    "height": 1, // 1 meter
+	    "distance": 1, // 1 meter
+	}
+    },
+};
+
+// Drawing helpers
+
 Color = function (r, g, b, a) {
     this.values[0] = clamp(0, r, 255);
     this.values[1] = clamp(0, g, 255);
@@ -226,7 +241,7 @@ render_point = function (x, y) {
 // Beamsaber interface
 
 let beamsaber = null;
-let scene = {};
+let scene = default_scene;
 
 const default_input_mode = "json"; // Change to beamsaber once it's implemented.
 
@@ -237,6 +252,21 @@ function beamsaber_init() {
     beamsaber = new Gfx("render-canvas", 640, 480);
     beamsaber.clear();
     beamsaber_set_input(default_input_mode);
+    beamsaber_put_scene(default_input_mode);
+}
+
+function beamsaber_put_scene(mode) {
+    if (mode === "json") {
+	json_input = document.getElementById("json-input");
+	code_input = json_input.getElementsByClassName("code-input")[0];
+	code_input.value = JSON.stringify(scene).slice(1, -1);
+    }
+    else if (mode === "beamsaber") {
+	console.log("Beamsaber scene description not implemented");
+    }
+    else {
+	console.log("Unrecognized mode");
+    }
 }
 
 function beamsaber_render() {
