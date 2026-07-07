@@ -100,6 +100,10 @@ Vec3.prototype.norm = function() {
     this.scale(1/this.mag());
 }
 
+Vec3.add = function(v1, v2) {
+    return new Vec3(v1.x() + v2.x(), v1.y() + v2.y(), v1.z() + v2.z());
+}
+
 Vec3.dot = function(v1, v2) {
     return v1.x() * v2.x() + v1.y() * v2.y() + v1.z() * v2.z();
 }
@@ -119,15 +123,7 @@ Vec4.prototype.x = function() {
     return this.values[0];
 }
 
-Vec4.prototype.r = function() {
-    return this.values[0];
-}
-
 Vec4.prototype.y = function() {
-    return this.values[1];
-}
-
-Vec4.prototype.g = function() {
     return this.values[1];
 }
 
@@ -135,15 +131,7 @@ Vec4.prototype.z = function() {
     return this.values[2];
 }
 
-Vec4.prototype.b = function() {
-    return this.values[2];
-}
-
 Vec4.prototype.w = function() {
-    return this.values[3];
-}
-
-Vec4.prototype.a = function() {
     return this.values[3];
 }
 
@@ -165,14 +153,74 @@ Vec4.prototype.norm = function() {
     this.scale(1/this.mag());
 }
 
+Vec4.add = function(v1, v2) {
+    return new Vec4(v1.x() + v2.x(), v1.y() + v2.y(), v1.z() + v2.z(), v1.w() + v2.w());
+}
+
 Vec4.dot = function(v1, v2) {
     return v1.x() * v2.x() + v1.y() * v2.y() + v1.z() * v2.z() + v1.w() * v2.w();
 }
 
+clamp = function(min, x, max) {
+    if (x < min) {
+	return min;
+    }
+    else if (x > max) {
+	return max;
+    }
+    else {
+	return x;
+    }
+}
+
 // Scene representation
+Color = function (r, g, b, a) {
+    this.values[0] = clamp(0, r, 255);
+    this.values[1] = clamp(0, g, 255);
+    this.values[2] = clamp(0, b, 255);
+    this.values[3] = clamp(0, a, 255);
+}
+
+Color.prototype = new Vec4();
+Color.prototype.constructor = Color;    
+
+Color.prototype.r = function() {
+    return this.values[0];
+}
+
+Color.prototype.g = function() {
+    return this.values[1];
+}
+
+Color.prototype.b = function() {
+    return this.values[2];
+}
+
+Color.prototype.a = function() {
+    return this.values[3];
+}
+
+Color.prototype.scale = function(x) {
+    this.values[0] = clamp(0, this.values[0] * x, 255);
+    this.values[1] = clamp(0, this.values[1] * x, 255);
+    this.values[2] = clamp(0, this.values[2] * x, 255);
+    this.values[3] = clamp(0, this.values[3] * x, 255);
+}
+
+Color.add = function(c1, c2) {
+    return new Color(clamp(0, c1.r() + c2.r(), 255),
+		     clamp(0, c1.g() + c2.g(), 255),
+		     clamp(0, c1.b() + c2.b(), 255),
+		     clamp(0, c1.a() + c2.a(), 255));
+}
+
+put_color = function (handle, x, y, color) {
+    handle.putPixel(x, y, color.r(), color.g(), color.b(), color.a());
+}
 
 render_point = function (x, y) {
-    beamsaber.putPixel(x, y, Math.abs(4*x)%256, Math.abs(16*y)%256, Math.abs(x+y)%256, 255);
+    c = new Color(Math.abs(4*x)%256, Math.abs(16*y)%256, Math.abs(x+y)%256, 255);
+    put_color(beamsaber, x, y, c);
 }
 
 // Beamsaber interface
