@@ -6,3 +6,7 @@ canvas {
     height: 480px;
     outline: black 2px solid;
 }
+
+.code {
+    font-family: "Noto Sans Mono", monospace;
+}

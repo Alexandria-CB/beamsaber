@@ -258,10 +258,7 @@ function beamsaber_submit(type) {
 	console.log("Loading json data...");
 	input = document.getElementById("json-input");
 	try {
-	    json_text = input.getElementsByClassName("code-input")[0].value;
-	    if (json_text.length === 0) {
-		json_text = '{}';
-	    }
+	    json_text = "{" + input.getElementsByClassName("code-input")[0].value + "}";
 	    scene = JSON.parse(json_text);
 	}
 	catch (e) {
